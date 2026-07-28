@@ -1,1 +1,1 @@
-web: sh -c 'uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}'
+web: sh -c 'OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 WEB_CONCURRENCY=1 uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}'
