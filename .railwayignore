@@ -1,0 +1,18 @@
+# Avoid uploading local virtualenvs and heavy local artifacts
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Keep deployment smaller
+training_images/
+testing_images/
+yolov7/tools/
+yolov7/paper/
+yolov7/inference/
+yolov7/deploy/
+yolov7/train.py
+yolov7/train_aux.py
+yolov7/test.py
+yolov7/export.py

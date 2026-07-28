@@ -29,7 +29,6 @@ runs/
 *.cache
 
 # Deployment packaging
-.railwayignore
 .dockerignore
 
 # Large or non-runtime assets that do not need to be deployed
