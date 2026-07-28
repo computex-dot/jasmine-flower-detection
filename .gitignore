@@ -28,6 +28,22 @@ Thumbs.db
 runs/
 *.cache
 
+# Deployment packaging
+.railwayignore
+.dockerignore
+
+# Large or non-runtime assets that do not need to be deployed
+training_images/
+testing_images/
+yolov7/tools/
+yolov7/paper/
+yolov7/inference/
+yolov7/deploy/
+yolov7/train.py
+yolov7/train_aux.py
+yolov7/test.py
+yolov7/export.py
+
 # --------------------------------------------------------------
 # IMPORTANT: do NOT ignore these — Render builds from what's in git
 # --------------------------------------------------------------
