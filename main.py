@@ -52,11 +52,12 @@ model_wrapper = ModelWrapper(
 )
 
 
+import threading
+
 @app.on_event("startup")
 def startup_event():
-    logger.info("Loading YOLOv7 model...")
-    model_wrapper.load()
-    logger.info("Model loaded successfully.")
+    logger.info("Starting background thread to load YOLOv7 model...")
+    threading.Thread(target=model_wrapper.load, daemon=True).start()
 
 
 @app.get("/health")

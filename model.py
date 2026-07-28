@@ -3,6 +3,7 @@ Model loading and inference logic, ported directly from the original
 Streamlit app's load_model / run_inference / class_map functions.
 """
 
+import threading
 from typing import List, Tuple
 
 import numpy as np
@@ -16,18 +17,22 @@ class ModelWrapper:
         self.weights_path = weights_path
         self.yolov7_repo_path = yolov7_repo_path
         self._model = None
+        self._lock = threading.Lock()
 
     def load(self):
-        """Loads the YOLOv7 model once. Equivalent to the Streamlit
+        """Loads the YOLOv7 model once with thread safety. Equivalent to the Streamlit
         @st.cache_resource-decorated load_model()."""
-        self._model = torch.hub.load(
-            self.yolov7_repo_path,
-            "custom",
-            self.weights_path,
-            source="local",
-            trust_repo=True,
-        )
-        self._model.eval()
+        with self._lock:
+            if self._model is not None:
+                return
+            self._model = torch.hub.load(
+                self.yolov7_repo_path,
+                "custom",
+                self.weights_path,
+                source="local",
+                trust_repo=True,
+            )
+            self._model.eval()
 
     def is_loaded(self) -> bool:
         return self._model is not None
@@ -41,7 +46,7 @@ class ModelWrapper:
             annotated_img: numpy array of the rendered image with boxes drawn
         """
         if self._model is None:
-            raise RuntimeError("Model has not been loaded yet.")
+            self.load()
 
         results = self._model(img)
         df = results.pandas().xyxy[0]
